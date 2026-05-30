@@ -1,0 +1,6 @@
+case_id,prompt_type,relevance,factuality,completeness,hallucination_risk
+LLM-001,model_summary,0.5,0.8,0.7,low
+LLM-002,risk_explanation,0.25,0.725,0.575,low
+LLM-003,auditor_response,0.0,0.2,0.45,high
+LLM-004,validation_report,0.8,0.89,0.85,low
+LLM-005,hallucination_check,0.0,0.2,0.45,high

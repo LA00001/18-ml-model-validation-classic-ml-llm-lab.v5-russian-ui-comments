@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11312.151 d18.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelValidationLab.UI", "ModelValidationLab.UI.csproj", "{B0F2F15C-77B1-4F8F-8C8F-2B2C1D2A1818}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B0F2F15C-77B1-4F8F-8C8F-2B2C1D2A1818}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0F2F15C-77B1-4F8F-8C8F-2B2C1D2A1818}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0F2F15C-77B1-4F8F-8C8F-2B2C1D2A1818}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0F2F15C-77B1-4F8F-8C8F-2B2C1D2A1818}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

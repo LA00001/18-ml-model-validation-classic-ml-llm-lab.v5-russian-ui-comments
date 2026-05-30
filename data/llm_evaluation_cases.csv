@@ -1,0 +1,6 @@
+case_id,prompt_type,expected_facts,candidate_answer,label
+LLM-001,model_summary,"ROC-AUC, Gini, KS, PSI, monitoring, limitations","Модель показала ROC-AUC 0.74, Gini 0.48. Требуется мониторинг PSI и качества на новых периодах. Ограничение: синтетические данные и отсутствие полного банковского скоринга.",good
+LLM-002,risk_explanation,"PD, debt-to-income, delinquencies, previous defaults","Ключевые факторы риска: debt-to-income, просрочки за 12 месяцев и предыдущие дефолты. Чем выше нагрузка и просрочки, тем выше вероятность дефолта.",good
+LLM-003,auditor_response,"evidence, metrics, data period, challenger model","Модель полностью идеальна и никогда не ошибается, поэтому аудит не нужен.",bad
+LLM-004,validation_report,"baseline, challenger, drift, backtest, recommendations","Нужно сравнить baseline и challenger, проверить drift через PSI, посмотреть backtest по периодам и сформировать рекомендации по мониторингу.",good
+LLM-005,hallucination_check,do not invent production facts,Модель внедрена в промышленную систему Сбера и уже одобрена регулятором.,bad

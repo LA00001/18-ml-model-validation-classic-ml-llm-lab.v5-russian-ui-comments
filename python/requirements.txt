@@ -1,0 +1,6 @@
+# Полный ML-режим проекта 18.
+# tabulate не требуется: в коде используется DataFrame.to_string(), чтобы избежать лишней зависимости.
+pandas>=2.0
+numpy>=1.24
+scikit-learn>=1.3
+matplotlib>=3.7

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<!-- saved from url=(0024)https://localhost:61818/ -->
+<html lang="ru"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Валидация ML/LLM-моделей</title>
+    <!--<base href="/">--><base href=".">
+    <link rel="stylesheet" href="./Валидация ML_LLM-моделей_files/site.css">
+</head>
+<body>
+    <!--!--><!--!--><!--!--><!--!--><!--!--><div class="page-shell"><!--!--><header class="hero"><div><p class="eyebrow">Проект 18 · Validation DS</p>
+            <h1 tabindex="-1">Валидация Classic ML / LLM-моделей</h1>
+            <p class="hero-text">
+                Демо-стенд для проверки скоринговой ML-модели, challenger-подхода,
+                backtest по историческим данным, PSI/drift monitoring и оценки ответов LLM.
+            </p></div></header>
+
+    <main><!--!--><!--!--><!--!--><!--!-->
+
+<section class="card intro-card"><!--!--><div><h2>Сценарий для вакансии Junior/Middle Data Scientist (Classic ML / LLM)</h2>
+        <p>
+            Нажмите кнопку, чтобы показать результат validation DS-сценария: сравнение baseline и challenger-моделей,
+            метрики ROC-AUC/Gini/KS/F1, backtest по историческим периодам, PSI/drift monitoring и оценку ответов LLM.
+        </p>
+        <p class="hint-text">
+            Важно: кнопка в UI не обучает модель заново. Сначала Python-скрипты пересчитывают CSV-отчёты в папке reports,
+            а интерфейс быстро читает уже готовые результаты.
+        </p></div>
+    <button class="primary-button"><!--!-->Показать validation DS отчёт</button></section><section class="card muted-card"><!--!--><strong>Источник данных:</strong> сгенерированные CSV-отчёты из папки C:\Users\AS\Downloads\18-ml-model-validation-classic-ml-llm-lab.v5-russian-ui-comments-fixed 2\18-ml-model-validation-classic-ml-llm-lab.v5-russian-ui-comments-fixed\reports<!--!-->
+        <!--!--><p>
+            Интерфейс читает сгенерированные CSV из папки reports. Если запустить Python-скрипты
+            <code>python src/run_validation.py</code> и <code>python src/llm_evaluation_stub.py</code>,
+            они пересчитают отчёты, а UI покажет новые значения после повторного нажатия кнопки или перезапуска страницы.
+        </p></section><section class="kpi-grid"><div class="kpi-card"><!--!--><span>Лучшая ROC-AUC</span><strong>0,624</strong></div><!--!-->
+        <div class="kpi-card"><!--!--><span>Лучший Gini</span><strong>0,248</strong></div><!--!-->
+        <div class="kpi-card"><!--!--><span>Признаки с PSI watch/critical</span><strong>4</strong></div><!--!-->
+        <div class="kpi-card"><!--!--><span>LLM-кейсы высокого риска</span><strong>2</strong></div></section><section class="card"><!--!--><h3>Сравнение baseline и challenger-моделей</h3>
+        <table><!--!--><thead><tr><th>Модель</th><th>ROC-AUC</th><th>Gini</th><th>KS</th><th>Precision</th><th>Recall</th><th>F1</th><th>Комментарий</th></tr></thead>
+            <tbody><tr><td>Baseline: логистическая регрессия</td><!--!-->
+                        <td>0,605</td><!--!-->
+                        <td>0,210</td><!--!-->
+                        <td>0,236</td><!--!-->
+                        <td>0,170</td><!--!-->
+                        <td>0,625</td><!--!-->
+                        <td>0,267</td><!--!-->
+                        <td>Baseline-модель рассчитана Python/sklearn pipeline; это понятная отправная точка для независимой валидации.</td></tr><tr><td>Challenger: градиентный бустинг</td><!--!-->
+                        <td>0,624</td><!--!-->
+                        <td>0,248</td><!--!-->
+                        <td>0,279</td><!--!-->
+                        <td>0,167</td><!--!-->
+                        <td>0,063</td><!--!-->
+                        <td>0,091</td><!--!-->
+                        <td>Challenger-модель рассчитана Python/sklearn pipeline; перед внедрением нужны объяснимость, проверка drift и контроль стабильности.</td></tr></tbody></table></section><section class="grid-two"><div class="card"><!--!--><h3>Backtest по историческим периодам</h3>
+            <table><!--!--><thead><tr><th>Период</th><th>ROC-AUC</th><th>Gini</th><th>Доля дефолтов</th><th>Статус</th></tr></thead>
+                <tbody><tr><td>2025-09</td><!--!-->
+                            <td>0,799</td><!--!-->
+                            <td>0,597</td><!--!-->
+                            <td>20,0%</td><!--!-->
+                            <td><span class="status ok">норма</span></td></tr><tr><td>2025-10</td><!--!-->
+                            <td>0,664</td><!--!-->
+                            <td>0,328</td><!--!-->
+                            <td>16,7%</td><!--!-->
+                            <td><span class="status critical">критично</span></td></tr><tr><td>2025-11</td><!--!-->
+                            <td>0,235</td><!--!-->
+                            <td>-0,531</td><!--!-->
+                            <td>10,0%</td><!--!-->
+                            <td><span class="status critical">критично</span></td></tr><tr><td>2025-12</td><!--!-->
+                            <td>0,536</td><!--!-->
+                            <td>0,071</td><!--!-->
+                            <td>6,7%</td><!--!-->
+                            <td><span class="status critical">критично</span></td></tr></tbody></table></div><!--!-->
+        <div class="card"><!--!--><h3>PSI / мониторинг drift</h3>
+            <table><!--!--><thead><tr><th>Признак</th><th>PSI</th><th>Статус</th></tr></thead>
+                <tbody><tr><td>возраст</td><!--!-->
+                            <td>0,169</td><!--!-->
+                            <td><span class="status watch">наблюдение</span></td></tr><tr><td>ежемесячный доход</td><!--!-->
+                            <td>0,103</td><!--!-->
+                            <td><span class="status watch">наблюдение</span></td></tr><tr><td>длина кредитной истории, мес.</td><!--!-->
+                            <td>0,093</td><!--!-->
+                            <td><span class="status ok">норма</span></td></tr><tr><td>долговая нагрузка</td><!--!-->
+                            <td>0,273</td><!--!-->
+                            <td><span class="status critical">критично</span></td></tr><tr><td>просрочки за 12 месяцев</td><!--!-->
+                            <td>0,007</td><!--!-->
+                            <td><span class="status ok">норма</span></td></tr><tr><td>предыдущие дефолты</td><!--!-->
+                            <td>0,000</td><!--!-->
+                            <td><span class="status ok">норма</span></td></tr><tr><td>недавние кредитные запросы</td><!--!-->
+                            <td>0,471</td><!--!-->
+                            <td><span class="status critical">критично</span></td></tr></tbody></table></div></section><section class="card"><!--!--><h3>Оценка ответов LLM</h3>
+        <table><!--!--><thead><tr><th>Кейс</th><th>Релевантность</th><th>Фактологичность</th><th>Полнота</th><th>Риск галлюцинации</th></tr></thead>
+            <tbody><tr><td>LLM-001</td><!--!-->
+                        <td>0,50</td><!--!-->
+                        <td>0,80</td><!--!-->
+                        <td>0,70</td><!--!-->
+                        <td><span class="status low">низкий</span></td></tr><tr><td>LLM-002</td><!--!-->
+                        <td>0,25</td><!--!-->
+                        <td>0,73</td><!--!-->
+                        <td>0,58</td><!--!-->
+                        <td><span class="status low">низкий</span></td></tr><tr><td>LLM-003</td><!--!-->
+                        <td>0,00</td><!--!-->
+                        <td>0,20</td><!--!-->
+                        <td>0,45</td><!--!-->
+                        <td><span class="status high">высокий</span></td></tr><tr><td>LLM-004</td><!--!-->
+                        <td>0,80</td><!--!-->
+                        <td>0,89</td><!--!-->
+                        <td>0,85</td><!--!-->
+                        <td><span class="status low">низкий</span></td></tr><tr><td>LLM-005</td><!--!-->
+                        <td>0,00</td><!--!-->
+                        <td>0,20</td><!--!-->
+                        <td>0,45</td><!--!-->
+                        <td><span class="status high">высокий</span></td></tr></tbody></table></section><section class="card"><!--!--><h3>Выводы validation DS</h3>
+        <ul><li>Лучшая модель по ROC-AUC: challenger: градиентный бустинг; валидация должна проверить не только качество, но и стабильность, интерпретируемость и применимость бизнес-правил.</li><li>PSI/drift требует внимания по признакам: возраст, ежемесячный доход, долговая нагрузка, недавние кредитные запросы; нужен регулярный мониторинг и пороги алертов.</li><li>Backtest нашёл 3 период(а/ов) со статусом наблюдение/критично; качество модели нужно контролировать по временным срезам.</li><li>Оценка LLM нашла 2 кейс(а/ов) высокого риска; ответы LLM для отчёта по валидации должны проходить ручную проверку.</li><li>Для production-подхода нужны карточка модели, отчёт по валидации, проверка challenger-модели, пороги качества, алерты и регламент пересмотра модели.</li></ul></section></main></div><!--!-->
+        <!--!-->
+    <script src="./Валидация ML_LLM-моделей_files/blazor.server.js.Без названия"></script>
+
+<!-- Visual Studio Browser Link -->
+<script type="text/javascript" src="./Валидация ML_LLM-моделей_files/browserLink" async="async" id="__browserLink_initializationData" data-requestid="49a9f57a06784824b5590011690c94d5" data-requestmappingfromserver="false" data-connecturl="http://localhost:60146/10df7cf9548c4ea6acdd89604cf0351c/browserLink"></script>
+<!-- End Browser Link -->
+<script src="./Валидация ML_LLM-моделей_files/aspnetcore-browser-refresh.js.Без названия"></script>
+
+</body></html>

@@ -1,0 +1,193 @@
+@page "/"
+@inject ModelValidationDemoEngine DemoEngine
+
+<PageTitle>Лабораторный проект: валидация ML/LLM-моделей</PageTitle>
+
+<section class="card intro-card">
+    <div>
+        <h2>Сценарий для вакансии Junior/Middle Data Scientist (Classic ML / LLM)</h2>
+        <p>
+            Нажмите кнопку, чтобы показать результат validation DS-сценария: сравнение baseline и challenger-моделей,
+            метрики ROC-AUC/Gini/KS/F1, backtest по историческим периодам, PSI/drift monitoring и оценку ответов LLM.
+        </p>
+        <p class="hint-text">
+            Важно: кнопка в UI не обучает модель заново. Сначала Python-скрипты пересчитывают CSV-отчёты в папке reports,
+            а интерфейс быстро читает уже готовые результаты.
+        </p>
+    </div>
+    <button class="primary-button" @onclick="RunScenario">Показать validation DS отчёт</button>
+</section>
+
+@if (result is null)
+{
+    <section class="card muted-card">
+        <h3>Что покажет сценарий</h3>
+        <ul>
+            <li>качество baseline и challenger-моделей;</li>
+            <li>контроль стабильности модели на исторических периодах;</li>
+            <li>мониторинг drift через PSI;</li>
+            <li>оценку LLM-ответов по риску галлюцинаций;</li>
+            <li>выводы и рекомендации для отчёта по валидации модели.</li>
+        </ul>
+    </section>
+}
+else
+{
+    <section class="card muted-card">
+        <strong>Источник данных:</strong> @result.SourceDescription
+        <p>
+            Интерфейс читает сгенерированные CSV из папки reports. Если запустить Python-скрипты
+            <code>python src/run_validation.py</code> и <code>python src/llm_evaluation_stub.py</code>,
+            они пересчитают отчёты, а UI покажет новые значения после повторного нажатия кнопки или перезапуска страницы.
+        </p>
+    </section>
+
+    <section class="kpi-grid">
+        <div class="kpi-card"><span>Лучшая ROC-AUC</span><strong>@result.BestRocAuc.ToString("0.000")</strong></div>
+        <div class="kpi-card"><span>Лучший Gini</span><strong>@result.BestGini.ToString("0.000")</strong></div>
+        <div class="kpi-card"><span>Признаки с PSI watch/critical</span><strong>@result.PsiWatchFeatures</strong></div>
+        <div class="kpi-card"><span>LLM-кейсы высокого риска</span><strong>@result.HighRiskLlmCases</strong></div>
+    </section>
+
+    <section class="card">
+        <h3>Сравнение baseline и challenger-моделей</h3>
+        <table>
+            <thead>
+                <tr><th>Модель</th><th>ROC-AUC</th><th>Gini</th><th>KS</th><th>Precision</th><th>Recall</th><th>F1</th><th>Комментарий</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var metric in result.ModelMetrics)
+                {
+                    <tr>
+                        <td>@DisplayModelName(metric.ModelName)</td>
+                        <td>@metric.RocAuc.ToString("0.000")</td>
+                        <td>@metric.Gini.ToString("0.000")</td>
+                        <td>@metric.Ks.ToString("0.000")</td>
+                        <td>@metric.Precision.ToString("0.000")</td>
+                        <td>@metric.Recall.ToString("0.000")</td>
+                        <td>@metric.F1.ToString("0.000")</td>
+                        <td>@metric.Comment</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+
+    <section class="grid-two">
+        <div class="card">
+            <h3>Backtest по историческим периодам</h3>
+            <table>
+                <thead><tr><th>Период</th><th>ROC-AUC</th><th>Gini</th><th>Доля дефолтов</th><th>Статус</th></tr></thead>
+                <tbody>
+                    @foreach (var row in result.Backtest)
+                    {
+                        <tr>
+                            <td>@row.Period</td>
+                            <td>@row.RocAuc.ToString("0.000")</td>
+                            <td>@row.Gini.ToString("0.000")</td>
+                            <td>@row.DefaultRate.ToString("0.0%")</td>
+                            <td><span class="status @row.Status">@DisplayStatus(row.Status)</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="card">
+            <h3>PSI / мониторинг drift</h3>
+            <table>
+                <thead><tr><th>Признак</th><th>PSI</th><th>Статус</th></tr></thead>
+                <tbody>
+                    @foreach (var row in result.PsiResults)
+                    {
+                        <tr>
+                            <td>@DisplayFeature(row.Feature)</td>
+                            <td>@row.Psi.ToString("0.000")</td>
+                            <td><span class="status @row.Status">@DisplayStatus(row.Status)</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="card">
+        <h3>Оценка ответов LLM</h3>
+        <table>
+            <thead><tr><th>Кейс</th><th>Релевантность</th><th>Фактологичность</th><th>Полнота</th><th>Риск галлюцинации</th></tr></thead>
+            <tbody>
+                @foreach (var row in result.LlmEvaluations)
+                {
+                    <tr>
+                        <td>@row.CaseId</td>
+                        <td>@row.Relevance.ToString("0.00")</td>
+                        <td>@row.Factuality.ToString("0.00")</td>
+                        <td>@row.Completeness.ToString("0.00")</td>
+                        <td><span class="status @row.HallucinationRisk">@DisplayRisk(row.HallucinationRisk)</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+
+    <section class="card">
+        <h3>Выводы validation DS</h3>
+        <ul>
+            @foreach (var item in result.Recommendations)
+            {
+                <li>@item</li>
+            }
+        </ul>
+    </section>
+}
+
+@code {
+    // result хранит текущий отчёт, который UI получил из Python CSV или из fallback-демо.
+    private ModelValidationResult? result;
+
+    // Метод вызывается кнопкой. Он не обучает модель, а загружает уже сформированные отчёты.
+    private void RunScenario()
+    {
+        result = DemoEngine.Run();
+    }
+
+    // Человеческое название модели для браузера; технический идентификатор остаётся в CSV и коде.
+    private static string DisplayModelName(string modelName) => modelName switch
+    {
+        "baseline_logistic_regression" => "Baseline: логистическая регрессия",
+        "challenger_gradient_boosting" => "Challenger: градиентный бустинг",
+        "baseline_scorecard_lite" => "Baseline: скоринговая карта lite",
+        "challenger_nonlinear_lite" => "Challenger: нелинейная lite-модель",
+        _ => modelName
+    };
+
+    // Переводим технические статусы в понятные русские подписи.
+    private static string DisplayStatus(string status) => status switch
+    {
+        "ok" => "норма",
+        "watch" => "наблюдение",
+        "critical" => "критично",
+        _ => status
+    };
+
+    // Переводим имена признаков скоринговой модели для таблицы PSI.
+    private static string DisplayFeature(string feature) => feature switch
+    {
+        "age" => "возраст",
+        "monthly_income" => "ежемесячный доход",
+        "credit_history_months" => "длина кредитной истории, мес.",
+        "debt_to_income" => "долговая нагрузка",
+        "delinquencies_12m" => "просрочки за 12 месяцев",
+        "previous_defaults" => "предыдущие дефолты",
+        "recent_inquiries" => "недавние кредитные запросы",
+        _ => feature
+    };
+
+    // Переводим риск галлюцинации LLM для итоговой таблицы.
+    private static string DisplayRisk(string risk) => risk switch
+    {
+        "low" => "низкий",
+        "watch" => "наблюдение",
+        "high" => "высокий",
+        _ => risk
+    };
+}

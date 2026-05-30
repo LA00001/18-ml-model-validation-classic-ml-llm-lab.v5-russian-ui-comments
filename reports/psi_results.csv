@@ -1,0 +1,6 @@
+feature,psi,status
+debt_to_income,0.213,watch
+monthly_income,0.061,ok
+credit_history_months,0.044,ok
+recent_inquiries,0.184,watch
+delinquencies_12m,0.097,ok

@@ -1,0 +1,8 @@
+feature,psi,status
+age,0.1686,watch
+monthly_income,0.1032,watch
+credit_history_months,0.0932,ok
+debt_to_income,0.273,critical
+delinquencies_12m,0.007,ok
+previous_defaults,0.0,ok
+recent_inquiries,0.4709,critical
